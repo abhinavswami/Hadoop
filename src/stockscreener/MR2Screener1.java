@@ -110,8 +110,9 @@ public class MR2Screener1 {
 			totalTickers = context.getCounter("SectorCount", key.toString() + "total tickers").getValue();
 			totalCapital = context.getCounter("SectorCount", key.toString() + "total capital").getValue();
 
-			String info = "\n" + tickers.toString() + "\n" + "Total tickers for " + key.toString() + " = "
-					+ totalTickers + "\n" + "Total capitalization for " + key.toString() + "= $" + totalCapital;
+			String info = "\n" + "Tickers = " + tickers.toString() + "\n" + "Total tickers for " + key.toString()
+					+ " = " + totalTickers + "\n" + "Total capitalization for " + key.toString() + "= $" + totalCapital
+					+ "\n";
 
 			KEY.set("Sector = " + key);
 			SECTOR_INFO.set(info);
@@ -144,16 +145,9 @@ public class MR2Screener1 {
 
 		job.setNumReduceTasks(1);
 
-		// set map output key and value class
-		job.setMapOutputKeyClass(Text.class);
-		job.setMapOutputValueClass(Text.class);
-
 		// set output key and value class
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);
-
-		FileInputFormat.addInputPath(job, new Path(args[0]));
-		FileOutputFormat.setOutputPath(job, new Path(output));
 
 		boolean result = job.waitForCompletion(true);
 		System.exit(result ? 0 : 1);
