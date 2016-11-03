@@ -83,9 +83,6 @@ public class SparkSreener1 {
 		JavaPairRDD<String, Tuple2<String, Double>> counts = pairs
 				.reduceByKey(new Function2<Tuple2<String, Double>, Tuple2<String, Double>, Tuple2<String, Double>>() {
 
-					private final static double BILLION = 1000000000.00;
-					public final static String NO_INFO = "n/a";
-
 					@Override
 					public Tuple2<String, Double> call(Tuple2<String, Double> a, Tuple2<String, Double> b)
 							throws Exception {
