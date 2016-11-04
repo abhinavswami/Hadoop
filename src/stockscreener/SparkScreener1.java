@@ -15,7 +15,7 @@ import org.apache.spark.api.java.function.PairFunction;
 
 import scala.Tuple2;
 
-public class SparkSreener1 {
+public class SparkScreener1 {
 
 	public static void main(String[] args) throws IOException, URISyntaxException {
 
