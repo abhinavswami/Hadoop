@@ -46,7 +46,7 @@ public class MR2Screener1 {
 		private final static int sectorIndex = 5;
 		private final static int capIndex = 3;
 		private final static int tickerIndex = 0;
-		private final static double BILLION = 1000000000.00;
+		private final static double MILLION = 1000000.00;
 		public final static String NO_INFO = "n/a";
 
 		@Override
@@ -55,6 +55,7 @@ public class MR2Screener1 {
 			String sectorStr = tokens[sectorIndex].replace("\"", "");
 			String tickerStr = tokens[tickerIndex].replace("\"", "");
 			String capStr = tokens[capIndex].replace("\"", "");
+			Double cap = 0.0;
 
 			// skip the header
 			if (sectorStr.equals("Sector"))
@@ -62,13 +63,19 @@ public class MR2Screener1 {
 
 			if (tokens.length == 9) {
 
-				// Look for B at the end indicating Billion
-				if (!sectorStr.equals(NO_INFO) && capStr.endsWith("B")) {
-					capStr = capStr.replace("B", "");
-					capStr = capStr.replace("$", "");
+				// Ignore tickers with market cap as "n/a" or having "B"
+				if (!capStr.equals(NO_INFO) && !capStr.endsWith("B")) {
+
+					capStr = capStr.replace("$", ""); 	// Remove "$"
+
+					if (capStr.contains("M")) {
+						capStr = capStr.replace("M", "");	// Remove "M"
+						cap = Double.parseDouble(capStr) * MILLION;
+					} else
+						cap = Double.parseDouble(capStr);
 
 					KEY.set(sectorStr);
-					TICKER_CAP.set(tickerStr + "," + Double.parseDouble(capStr) * BILLION);
+					TICKER_CAP.set(tickerStr + "," + cap);
 
 					context.write(KEY, TICKER_CAP);
 				}
